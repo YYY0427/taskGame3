@@ -33,22 +33,25 @@ public:
 	//プレイヤーの弾と敵の当たり判定
 	bool playerShotEnemyCollision();
 private:
-	int drawCounter;
+	int m_enemyDrawCounter;
+	int m_playerDrawCounter;
 	bool m_enemyDamageFlag;
+	bool m_playerDamageFlag;
 	//ハンドル
-	int m_hPlayerGraphic[Player::kGraphicDivNum];	//プレイヤーのグラフィックハンドル
-	int m_hShotGraphic;								//プレイヤーの弾のハンドル
-	int m_hMapGraphic;								//マップのハンドル
-	int m_hEnemyUnchiGraphic;						//敵のハンドル
-	int m_hEnemyUnchiDamageGraphic;					//敵のダメージのハンドル
-	int m_hShotEnemyUnchiGraphic;					//敵の弾のハンドル
+	int m_hPlayerGraphic[Player::kGraphicDivNum];		//プレイヤーのグラフィックハンドル
+	int m_hPlayerDamageGraphic[Player::kGraphicDivNum];	//プレイヤーのダメージのグラフィックハンドル
+	int m_hShotGraphic;									//プレイヤーの弾のハンドル
+	int m_hMapGraphic;									//マップのハンドル
+	int m_hEnemyUnchiGraphic;							//敵のハンドル
+	int m_hEnemyUnchiDamageGraphic;						//敵のダメージのハンドル
+	int m_hShotEnemyUnchiGraphic;						//敵の弾のハンドル
 	//無敵時間
-	int m_waitFrame;								//敵とプレイヤーが当たった場合の無敵時間
-	int m_waitFrame2;								//敵の弾とプレイヤーが当たった場合の無敵時間					
+	int m_waitFrame;									//敵とプレイヤーが当たった場合の無敵時間
+	int m_waitFrame2;									//敵の弾とプレイヤーが当たった場合の無敵時間					
 	//サイズ
-	Vec2 m_shotEnemySize;							//敵の弾の画像サイズ
-	Vec2 m_shotPlayerSize;							//プレイヤーの弾の画像のサイズ
-	Vec2 m_enemySize;								//敵の画像サイズ
+	Vec2 m_shotEnemySize;								//敵の弾の画像サイズ
+	Vec2 m_shotPlayerSize;								//プレイヤーの弾の画像のサイズ
+	Vec2 m_enemySize;									//敵の画像サイズ
 	//クラスの設定
 	Player m_player;								
 	Map m_map;

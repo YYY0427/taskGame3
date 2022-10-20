@@ -14,8 +14,11 @@ public:
 	static constexpr int kGraphicDivNum = kGraphicDivX * kGraphicDivY;
 
 	//プレイヤーグラフィックサイズ　
-	static constexpr int kGraphicSizeX = 40;
-	static constexpr int kGraphicSizeY = 28;
+//	static constexpr int kGraphicSizeX = 40;
+//	static constexpr int kGraphicSizeY = 28;
+
+	static constexpr int kGraphicSizeX = 50;
+	static constexpr int kGraphicSizeY = 35;
 
 public:
 	Player();
@@ -23,6 +26,7 @@ public:
 
 	// グラフィックデータ設定
 	void setHandle(int index, int handle) { m_handle[index] = handle; }
+	void setDamageHandle(int index, int handle) { m_damageHandle[index] = handle; }
 	void setMapHandle(int mapHandle) { m_mapHandle = mapHandle; }
 
 	//SceneMainクラスのポインタ設定
@@ -35,7 +39,7 @@ public:
 	void update();
 	// 描画
 	void draw();
-
+	void damageDraw();
 	// 情報の取得
 	Vec2 getPos() const { return m_pos; }
 	Vec2 getSize() const { return m_playerSize; }
@@ -43,6 +47,7 @@ public:
 private:
 	//画像のハンドル
 	int m_handle[kGraphicDivNum];
+	int m_damageHandle[kGraphicDivNum];
 	int m_mapHandle;
 
 	//SceneMainのポインタ

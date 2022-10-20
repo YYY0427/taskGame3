@@ -13,11 +13,21 @@ SceneMain::SceneMain()
 	{
 		handle = -1;
 	}
+	for (auto& handle : m_hPlayerDamageGraphic)
+	{
+		handle = -1;
+	}
 	m_hShotGraphic = -1;
 	m_hEnemyUnchiGraphic = -1;
 	m_hMapGraphic = -1;
 	m_hShotEnemyUnchiGraphic = -1;
+	m_hEnemyUnchiDamageGraphic = -1;
 	m_waitFrame = 0;
+	m_waitFrame2 = 0;
+	m_enemyDrawCounter = 0;
+	m_playerDrawCounter = 0;
+	m_enemyDamageFlag = false;
+	m_playerDamageFlag = false;
 }
 SceneMain::~SceneMain()
 {
@@ -27,33 +37,43 @@ SceneMain::~SceneMain()
 //初期化
 void SceneMain::init()
 {
-	LoadDivGraph("playerImage/aiueo.png", Player::kGraphicDivNum,
-		Player::kGraphicDivX, Player::kGraphicDivY,
+				/* ======= 画像のロード ========*/
+	LoadDivGraph("playerImage/sasisuseso.png", Player::kGraphicDivNum,			//プレイヤーのロード
+		Player::kGraphicDivX, Player::kGraphicDivY,	
 		Player::kGraphicSizeX, Player::kGraphicSizeY, m_hPlayerGraphic);
 
+	LoadDivGraph("playerImage/sasisusesodamage.png", Player::kGraphicDivNum,	//プレイヤーのダメージ表示のロード
+		Player::kGraphicDivX, Player::kGraphicDivY,
+		Player::kGraphicSizeX, Player::kGraphicSizeY, m_hPlayerDamageGraphic);
+	m_hShotGraphic = LoadGraph("shotImage/13.png");								//弾のロード
+	m_hMapGraphic = LoadGraph("mapImage/map3.png");								//マップのロード
+	m_hEnemyUnchiGraphic = LoadGraph("enemyImage/enemy1.png");					//敵のロード
+	m_hEnemyUnchiDamageGraphic = LoadGraph("enemyImage/enemy1damage.png");		//敵のダメージ表示のロード
+	m_hShotEnemyUnchiGraphic = LoadGraph("enemyShotImage/enemy1.png");			//敵の弾のロード
+	
+				/* ======= ハンドルの設定 ======= */
+	m_player.setMapHandle(m_hMapGraphic);
+	m_enemyUnchi.setMapHandle(m_hMapGraphic);
+	m_enemyUnchi.setHandle(m_hEnemyUnchiGraphic);
+	m_enemyUnchi.setDamageHandle(m_hEnemyUnchiDamageGraphic);
+	m_map.setHandle(m_hMapGraphic);
+
+				/* ======= 画像のサイズの取得 ======= */
+	GetGraphSizeF(m_hEnemyUnchiGraphic, &m_enemySize.x, &m_enemySize.y);
+	GetGraphSizeF(m_hShotEnemyUnchiGraphic, &m_shotEnemySize.x, &m_shotEnemySize.y);
+	GetGraphSizeF(m_hShotGraphic, &m_shotPlayerSize.x, &m_shotPlayerSize.y);
+
+				/* ======= 初期化 ======= */
 	for (int i = 0; i < Player::kGraphicDivNum; i++)
 	{
 		m_player.setHandle(i, m_hPlayerGraphic[i]);
+		m_player.setDamageHandle(i, m_hPlayerDamageGraphic[i]);
 	}
+	m_playerDamageFlag = false;
 	m_enemyDamageFlag = false;
 	m_waitFrame = 0;
-	//弾のロード
-	m_hShotGraphic = LoadGraph("shotImage/13.png");
-	GetGraphSizeF(m_hShotGraphic, &m_shotPlayerSize.x, &m_shotPlayerSize.y);
-	//マップのロード
-	m_hMapGraphic = LoadGraph("mapImage/map3.png");
-	m_map.setHandle(m_hMapGraphic);
-	m_player.setMapHandle(m_hMapGraphic);
-	m_enemyUnchi.setMapHandle(m_hMapGraphic);
-	//敵のロード
-	m_hEnemyUnchiGraphic = LoadGraph("enemyImage/enemy1.png");
-	m_hEnemyUnchiDamageGraphic = LoadGraph("enemyImage/enemy1damage.png");
-	m_enemyUnchi.setHandle(m_hEnemyUnchiGraphic);
-	m_enemyUnchi.setDamageHandle(m_hEnemyUnchiDamageGraphic);
-	GetGraphSizeF(m_hEnemyUnchiGraphic, &m_enemySize.x, &m_enemySize.y);
-	//敵の弾のロード
-	m_hShotEnemyUnchiGraphic = LoadGraph("enemyShotImage/enemy1.png");
-	GetGraphSizeF(m_hShotEnemyUnchiGraphic, &m_shotEnemySize.x, &m_shotEnemySize.y);
+	m_enemyDrawCounter = 0;
+	m_playerDrawCounter = 0;
 
 	m_player.setMain(this);
 	m_enemyUnchi.setMain(this);
@@ -68,6 +88,10 @@ void SceneMain::end()
 {
 	//グラフィックアンロード
 	for (auto& handle : m_hPlayerGraphic)
+	{
+		DeleteGraph(handle);
+	}
+	for (auto& handle : m_hPlayerDamageGraphic)
 	{
 		DeleteGraph(handle);
 	}
@@ -136,13 +160,17 @@ void SceneMain::update()
 	{
 		//プレイヤーのライフを減らす
 		m_display.enemyPlayerCollision();
+		m_playerDamageFlag = true;
+		m_playerDrawCounter = 0;
 		m_waitFrame = 70;
 	}
 	//敵の弾とプレイヤーが当たった場合
 	if (enemyShotPlayerCollision() && m_waitFrame2 == 0)
 	{
 		m_display.enemyPlayerCollision();
-		m_waitFrame2 = 70;
+		m_playerDamageFlag = true;
+		m_playerDrawCounter = 0;
+		m_waitFrame2 = 20;
 	}
 	//敵が存在している場合のみ実行する
 	if (m_enemyUnchi.isExist())
@@ -153,6 +181,7 @@ void SceneMain::update()
 			m_display.defeatScore();
 			m_enemyUnchi.enemyLife();
 			m_enemyDamageFlag = true;
+			m_enemyDrawCounter = 0;
 		}
 	}
 }
@@ -161,13 +190,29 @@ void SceneMain::update()
 void SceneMain::draw()
 {
 	m_map.draw();
-	m_player.draw();
 	m_display.draw();
+	if (m_playerDamageFlag)
+	{
+		m_player.damageDraw();
+		m_playerDrawCounter++;
+		if (m_playerDrawCounter > 20)
+		{
+			m_playerDamageFlag = false;
+		}
+	}
+	else
+	{
+		m_player.draw();
+	}
 
 	if (m_enemyDamageFlag)
 	{
 		m_enemyUnchi.drawDamage();
-		m_enemyDamageFlag = false;
+		m_enemyDrawCounter++;
+		if (m_enemyDrawCounter > 20)
+		{
+			m_enemyDamageFlag = false;
+		}
 	}
 	else
 	{

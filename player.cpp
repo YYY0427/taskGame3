@@ -153,3 +153,8 @@ void Player::draw()
 {
 	DrawGraph(static_cast<int>(m_pos.x), static_cast<int>(m_pos.y), m_handle[m_animeNo], true);
 }
+
+void Player::damageDraw()
+{
+	DrawGraph(static_cast<int>(m_pos.x), static_cast<int>(m_pos.y), m_damageHandle[m_animeNo], true);
+}
