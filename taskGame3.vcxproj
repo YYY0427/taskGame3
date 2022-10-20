@@ -151,14 +151,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Display.cpp" />
     <ClCompile Include="enemyUnchi.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map.cpp" />
+    <ClCompile Include="Pad.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="SceneBase.cpp" />
+    <ClCompile Include="SceneEnd.cpp" />
     <ClCompile Include="SceneMain.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="selectMenu.cpp" />
     <ClCompile Include="SceneTitle.cpp" />
     <ClCompile Include="ShotBase.cpp" />
     <ClCompile Include="ShotEnemyNormal.cpp" />
@@ -166,14 +168,16 @@
     <ClCompile Include="Vec2.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Display.h" />
     <ClInclude Include="enemyUnchi.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="map.h" />
+    <ClInclude Include="Pad.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="SceneBase.h" />
+    <ClInclude Include="SceneEnd.h" />
     <ClInclude Include="SceneMain.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="selectMenu.h" />
     <ClInclude Include="SceneTitle.h" />
     <ClInclude Include="ShotBase.h" />
     <ClInclude Include="ShotEnemyNormal.h" />

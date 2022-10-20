@@ -1,6 +1,7 @@
 #pragma once
 
-#include "SceneBase.h"
+#include "SceneTitle.h"
+#include "SceneMain.h"
 
 class SceneManager
 {
@@ -10,7 +11,6 @@ public:
 	{
 		kSceneKindTitle,
 		kSceneKindMain,
-		kSceneKindMy,
 
 		kSceneKindNum
 	}SceneKind;
@@ -25,10 +25,13 @@ public:
 	void update();
 	void draw();
 
+	bool getisGameEnd() { return m_isGameEnd; }
 
 private:
 	SceneKind	m_kind;
 
-	SceneBase* m_pScene;
-};
+	SceneTitle	m_title;
+	SceneMain	m_main;
 
+	bool m_isGameEnd;
+};

@@ -1,6 +1,6 @@
 #pragma once
-
 #include "SceneBase.h"
+#include "selectMenu.h"
 
 class SceneTitle : public SceneBase
 {
@@ -9,25 +9,30 @@ public:
 	{
 		m_textPosY = 0;
 		m_textVecY = 0;
-		m_isEnd = false;
+		m_isGameStart = false;
+		m_isGameEnd = false;
 	}
 	virtual ~SceneTitle() {}
 
 
-	virtual void init() override;
-	virtual void end()override {}
+	virtual void init();
+	virtual void end();
 
-	virtual SceneBase* update()override;
-	virtual void draw()override;
+	virtual void update();
+	virtual void draw();
+
+
+	virtual bool isGameStart() { return m_isGameStart; }
+	virtual bool getisGameEnd() { return m_isGameEnd; }
+
 
 private:
 	// テキスト表示位置変更
 	int m_textPosY;
 	int m_textVecY;
 
-	bool m_isEnd;
+	SelectMenu m_menu;
 
-	int m_handle;
-	//座標
-	double x, y;
+	bool m_isGameStart;
+	bool m_isGameEnd;
 };

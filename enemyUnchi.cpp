@@ -37,8 +37,6 @@ enemyUnchi::~enemyUnchi()
 
 void enemyUnchi::init()
 {
-	m_randNum = 0;				//ƒ‰ƒ“ƒ_ƒ€‚È”š
-
 	//“G
 	m_pos.x = 150;				//“G‚ÌxÀ•W
 	m_pos.y = -50;				//“G‚ÌyÀ•W
@@ -51,6 +49,8 @@ void enemyUnchi::init()
 	m_randInterval = 180;		//“G‚Ì“®‚«‚ÌŠÔŠu
 	m_isExist = false;			//“G‚ª‘¶İ‚µ‚Ä‚¢‚é‚©
 	m_randMove = false;			//ƒ‰ƒ“ƒ_ƒ€‚È“®‚«‚ğ‚·‚é‚©
+	m_waitFrame = 8;
+	m_randNum = GetRand(3);
 
 	//’e
 	m_shotTime = 120;			//“G‚ª’e‚ğ”­Ë‚·‚é‚Ü‚Å‰½•b‘Ò‚Â‚©(60‚Å1•b‘Ò‚Â)
@@ -77,6 +77,13 @@ void enemyUnchi::update()
 		m_inCount--;		//‚±‚Ìif•ª‚ÉŸ‚©‚ç“ü‚ç‚È‚¢‚æ‚¤‚É‚·‚é
 	}
 	
+	m_waitFrame--;
+	if (m_waitFrame == 0)
+	{
+		m_randNum = GetRand(3);
+		m_waitFrame = 8;
+	}
+
 	//“G‚ª‘¶İ‚µ‚Ä‚¢‚éê‡
 	if (m_isExist)
 	{
@@ -88,26 +95,25 @@ void enemyUnchi::update()
 		if (m_randMove)
 		{
 			//4•ª‚Ì1‚ÌŠm—§‚Å4•ûŒü‚ÉˆÚ“®‚·‚é
-			m_randNum = GetRand(99);
-			if (m_randNum < 25)
+			if (m_randNum == 0)
 			{
-				m_pos.x += 8;
+				m_pos.x += 4;
 				if (m_pos.x > m_mapSize.x - m_enemySize.x)
 				{
 					m_pos.x = m_mapSize.x - m_enemySize.x;
 				}
 			}
-			else if (m_randNum < 25 + 25)
+			else if (m_randNum == 1)
 			{
-				m_pos.x -= 8;
+				m_pos.x -= 4;
 				if (m_pos.x < 0)
 				{
 					m_pos.x = 0;
 				}
 			}
-			else if (m_randNum < 25 + 25 + 25)
+			else if (m_randNum == 2)
 			{
-				m_pos.y += 8;
+				m_pos.y += 4;
 				if (m_pos.y > Game::kScreenHeight / 2 - 100 - m_enemySize.y)
 				{
 					m_pos.y = Game::kScreenHeight / 2 - 100 - m_enemySize.y;
@@ -115,7 +121,7 @@ void enemyUnchi::update()
 			}
 			else
 			{
-				m_pos.y -= 8;
+				m_pos.y -= 4;
 				if (m_pos.y < 0)
 				{
 					m_pos.y = 0;

@@ -11,7 +11,9 @@ public:
 	virtual void init() {}
 	virtual void end() {}
 
-	virtual SceneBase* update() { return this; }
+	virtual void update() {}
 	virtual void draw() {}
 
+	// ƒV[ƒ“I—¹
+	virtual bool isEnd() { return false; }
 };

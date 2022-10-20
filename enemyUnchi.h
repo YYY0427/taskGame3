@@ -19,6 +19,7 @@ public:
 	void drawDamage();
 	//敵のHP処理
 	void enemyLife();
+	int  getEnemyLife()const { return m_enemyLife; }
 	//SceneMainクラスのポインタ設定
 	void setMain(SceneMain* pMain) { m_pMain = pMain; }
 	//ハンドル設定
@@ -45,6 +46,7 @@ private:
 	int m_inCount;			//何秒で画面に入ってくるか
 	int m_randInterval;		//動きの間隔
 	int m_enemyLife;		//敵のHP
+	int m_waitFrame;
 
 	Vec2 m_pos;				//敵の表示位置
 	Vec2 m_vec;				//敵の移動

@@ -5,9 +5,9 @@
 #include "player.h"
 #include "ShotBase.h"
 #include "enemyUnchi.h"
-#include "Display.h"
+#include "SceneBase.h"
 
-class SceneMain
+class SceneMain : public SceneBase 
 {
 public:
 	SceneMain();
@@ -33,6 +33,7 @@ public:
 	//ƒvƒŒƒCƒ„[‚Ì’e‚Æ“G‚Ì“–‚½‚è”»’è
 	bool playerShotEnemyCollision();
 private:
+	int m_playerLife;
 	int m_enemyDrawCounter;
 	int m_playerDrawCounter;
 	bool m_enemyDamageFlag;
@@ -56,7 +57,6 @@ private:
 	Player m_player;								
 	Map m_map;
 	enemyUnchi m_enemyUnchi;
-	Display m_display;
 	//vector‚Ìİ’è
 	std::vector<ShotBase*> m_pShotVt;
 };

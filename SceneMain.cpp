@@ -6,6 +6,7 @@
 #include "enemyUnchi.h"
 #include "ShotNormal.h"
 #include "ShotEnemyNormal.h"
+#include "Pad.h"
 
 SceneMain::SceneMain()
 {
@@ -26,6 +27,7 @@ SceneMain::SceneMain()
 	m_waitFrame2 = 0;
 	m_enemyDrawCounter = 0;
 	m_playerDrawCounter = 0;
+	m_playerLife = 0;
 	m_enemyDamageFlag = false;
 	m_playerDamageFlag = false;
 }
@@ -46,7 +48,7 @@ void SceneMain::init()
 		Player::kGraphicDivX, Player::kGraphicDivY,
 		Player::kGraphicSizeX, Player::kGraphicSizeY, m_hPlayerDamageGraphic);
 	m_hShotGraphic = LoadGraph("shotImage/13.png");								//弾のロード
-	m_hMapGraphic = LoadGraph("mapImage/map3.png");								//マップのロード
+	m_hMapGraphic = LoadGraph("mapImage/map4.png");								//マップのロード
 	m_hEnemyUnchiGraphic = LoadGraph("enemyImage/enemy1.png");					//敵のロード
 	m_hEnemyUnchiDamageGraphic = LoadGraph("enemyImage/enemy1damage.png");		//敵のダメージ表示のロード
 	m_hShotEnemyUnchiGraphic = LoadGraph("enemyShotImage/enemy1.png");			//敵の弾のロード
@@ -74,13 +76,13 @@ void SceneMain::init()
 	m_waitFrame = 0;
 	m_enemyDrawCounter = 0;
 	m_playerDrawCounter = 0;
+	m_playerLife = 10;
 
 	m_player.setMain(this);
 	m_enemyUnchi.setMain(this);
 	m_player.init();
 	m_enemyUnchi.init();
 	m_map.init();
-	m_display.init();
 }
 
 // 終了処理
@@ -137,6 +139,15 @@ void SceneMain::update()
 	m_player.update();
 	m_enemyUnchi.update();
 
+	if (m_playerLife <= 0)
+	{
+
+	}
+	if (m_enemyUnchi.getEnemyLife() <= 0)
+	{
+
+	}
+
 	//敵とプレイヤーが当たった場合の無敵時間
 	if (m_waitFrame > 0)
 	{
@@ -159,7 +170,7 @@ void SceneMain::update()
 	if (enemyPlayerCollision() && m_waitFrame == 0)
 	{
 		//プレイヤーのライフを減らす
-		m_display.enemyPlayerCollision();
+		m_playerLife--;
 		m_playerDamageFlag = true;
 		m_playerDrawCounter = 0;
 		m_waitFrame = 70;
@@ -167,7 +178,7 @@ void SceneMain::update()
 	//敵の弾とプレイヤーが当たった場合
 	if (enemyShotPlayerCollision() && m_waitFrame2 == 0)
 	{
-		m_display.enemyPlayerCollision();
+		m_playerLife--;
 		m_playerDamageFlag = true;
 		m_playerDrawCounter = 0;
 		m_waitFrame2 = 20;
@@ -178,7 +189,6 @@ void SceneMain::update()
 		//プレイヤーの弾と敵が当たった場合
 		if (playerShotEnemyCollision())
 		{
-			m_display.defeatScore();
 			m_enemyUnchi.enemyLife();
 			m_enemyDamageFlag = true;
 			m_enemyDrawCounter = 0;
@@ -190,7 +200,6 @@ void SceneMain::update()
 void SceneMain::draw()
 {
 	m_map.draw();
-	m_display.draw();
 	if (m_playerDamageFlag)
 	{
 		m_player.damageDraw();
@@ -224,6 +233,9 @@ void SceneMain::draw()
 		assert(pShot);
 		pShot->draw();
 	}
+
+	DrawFormatString(400, 50, GetColor(255, 255, 255), "PLAYER LIFE  %d", m_playerLife);
+	DrawFormatString(400, 100, GetColor(255, 255, 255), "ENEMY LIFE  %d", m_enemyUnchi.getEnemyLife());
 }
 
 //敵とプレイヤーの当たり判定
@@ -300,8 +312,8 @@ bool SceneMain::enemyShotPlayerCollision()
 		auto& pShot = (*it);
 		assert(pShot);
 
-		float shotLeft = pShot->getPos().x;
-		float shotRight = pShot->getPos().x + m_shotEnemySize.x;
+		float shotLeft = pShot->getPos().x + 20;
+		float shotRight = pShot->getPos().x + m_shotEnemySize.x - 20;
 		float shotTop = pShot->getPos().y;
 		float shotBottom = pShot->getPos().y + m_shotEnemySize.y;
 
