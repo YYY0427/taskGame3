@@ -151,11 +151,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Display.cpp" />
+    <ClCompile Include="enemyUnchi.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="map.cpp" />
+    <ClCompile Include="player.cpp" />
+    <ClCompile Include="SceneMain.cpp" />
+    <ClCompile Include="ShotBase.cpp" />
+    <ClCompile Include="ShotEnemyNormal.cpp" />
+    <ClCompile Include="ShotNormal.cpp" />
     <ClCompile Include="Vec2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Display.h" />
+    <ClInclude Include="enemyUnchi.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="map.h" />
+    <ClInclude Include="player.h" />
+    <ClInclude Include="SceneMain.h" />
+    <ClInclude Include="ShotBase.h" />
+    <ClInclude Include="ShotEnemyNormal.h" />
+    <ClInclude Include="ShotNormal.h" />
     <ClInclude Include="Vec2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

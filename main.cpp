@@ -1,6 +1,7 @@
 #include "DxLib.h"
 
 #include "game.h"
+#include "SceneMain.h"
 
 // プログラムは WinMain から始まります
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
@@ -20,6 +21,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//ダブルバッファモード
 	SetDrawScreen(DX_SCREEN_BACK);
 
+	SceneMain scene;
+
+	//データのロード
+	scene.init();
+
 	while (ProcessMessage() == 0)
 	{
 		LONGLONG time = GetNowHiPerformanceCount();
@@ -27,18 +33,24 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		//画面のクリア
 		ClearDrawScreen();
 
+		scene.update();
+
+		scene.draw();
+
 		//裏画面を表画面を入れ替える
 		ScreenFlip();
 
 		//escキーを押したら終了する
 		if (CheckHitKey(KEY_INPUT_ESCAPE))	break;
-		
+
 		//fpsを60に固定
 		while (GetNowHiPerformanceCount() - time < 16667)
 		{
 
 		}
 	}
+
+	scene.end();
 
 	DxLib_End();				// ＤＸライブラリ使用の終了処理
 
